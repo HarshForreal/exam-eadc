@@ -5,16 +5,51 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Toggle Image</title>
     <link rel="stylesheet" href="style.css" />
-    <link rel="icon" href="Bulb.png" type="image/x-icon">
+    <link rel="icon" href="Bulb.png" type="image/x-icon" />
   </head>
   <body>
     <div class="container">
       <h1>Bulb Toggle</h1>
       <div class="content">
         <img id="bulbImage" src="bulb_off.png" alt="Bulb" />
-        <button id="toggleButton">Toggle</button>
+        <button id="turnOnButton">Turn On</button>
+        <button id="turnOffButton">Turn Off</button>
       </div>
     </div>
-    <script src="script.js"></script>
+    <script>
+      document.getElementById("turnOnButton").addEventListener("click", () => {
+        fetch("/bulb_on")
+          .then((response) => {
+            if (!response.ok) {
+              throw new Error("Failed to turn the bulb on");
+            }
+            return response.blob();
+          })
+          .then((blob) => {
+            const url = URL.createObjectURL(blob);
+            document.getElementById("bulbImage").src = url;
+          })
+          .catch((error) => {
+            console.error("Error:", error);
+          });
+      });
+
+      document.getElementById("turnOffButton").addEventListener("click", () => {
+        fetch("/bulb_off")
+          .then((response) => {
+            if (!response.ok) {
+              throw new Error("Failed to turn the bulb off");
+            }
+            return response.blob();
+          })
+          .then((blob) => {
+            const url = URL.createObjectURL(blob);
+            document.getElementById("bulbImage").src = url;
+          })
+          .catch((error) => {
+            console.error("Error:", error);
+          });
+      });
+    </script>
   </body>
 </html>
